@@ -16,7 +16,9 @@ app.use(express.static(join(__dirname, "../public")));
 
 // SERVE REACT FRONTEND (Production Mode)
 // Serve built React files from client/dist
-app.use(express.static(join(process.cwd(), "client/dist")));
+const clientDistPath = join(process.cwd(), "client/dist");
+console.log(`[SERVER] Serving static files from: ${clientDistPath}`);
+app.use(express.static(clientDistPath, { fallthrough: true }));
 
 // API Routes
 import authRoutes from "./routes/auth";
@@ -48,10 +50,17 @@ app.use("/admin", facilitatorRoutes);
 // Projector Route (can be separate file later if complex)
 // React SPA Fallback
 app.get("*", (req: any, res: any, next: any) => {
-  if (req.path.startsWith("/auth") || req.path.startsWith("/admin") || req.path.startsWith("/api")) {
+  if (req.path.startsWith("/auth") || req.path.startsWith("/admin") || req.path.startsWith("/api") || req.path.startsWith("/activity")) {
     return next();
   }
-  res.sendFile(join(process.cwd(), "client/dist/index.html"));
+  const indexPath = join(process.cwd(), "client/dist/index.html");
+  console.log(`[SERVER] Serving SPA fallback: ${indexPath}`);
+  res.sendFile(indexPath, (err: any) => {
+    if (err) {
+      console.error("[SERVER] Error serving index.html:", err);
+      res.status(500).send("Frontend files not found. Please rebuild the client.");
+    }
+  });
 });
 
 // app.get("/", (req, res) => {
