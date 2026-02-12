@@ -29,45 +29,128 @@ export const Login: React.FC = () => {
   };
 
   return (
-    <div className="container" style={{ maxWidth: "400px", margin: "100px auto", padding: "20px", border: "2px solid #00ff00", borderRadius: "8px" }}>
-      <h1 style={{ fontSize: "clamp(1.2rem, 5vw, 1.8rem)", marginBottom: "20px", wordBreak: "break-word" }}>
-        {isRegistering ? "🆕 New Registration" : "🔒 Login"}
+    <div className="container" style={{ 
+      maxWidth: "420px", 
+      margin: "80px auto", 
+      padding: "40px 30px", 
+      border: "2px solid #00ff00", 
+      borderRadius: "12px",
+      boxShadow: "0 0 30px rgba(0, 255, 0, 0.15)",
+      background: "rgba(0, 0, 0, 0.8)"
+    }}>
+      <h1 style={{ 
+        fontSize: "clamp(1.5rem, 5vw, 2rem)", 
+        marginBottom: "8px", 
+        fontWeight: "600",
+        letterSpacing: "-0.02em",
+        textAlign: "center"
+      }}>
+        {isRegistering ? "Create Account" : "Welcome Back"}
       </h1>
+      <p style={{ 
+        textAlign: "center", 
+        color: "#888", 
+        fontSize: "0.95rem", 
+        marginBottom: "30px"
+      }}>
+        {isRegistering ? "Join the SID2026 event" : "Sign in to continue"}
+      </p>
       {error && <p style={{ color: "red" }}>ERROR: {error}</p>}
       <form onSubmit={handleAuth} style={{ display: "flex", flexDirection: "column", gap: "10px" }}>
         {isRegistering && (
             <input
             type="text"
-            placeholder="Your Name"
+            placeholder="Display Name"
             value={displayName}
             onChange={(e) => setDisplayName(e.target.value)}
-            style={{ padding: "12px", background: "black", color: "#00ff00", border: "1px solid #00ff00", fontSize: "1rem", borderRadius: "6px" }}
+            required
+            style={{ 
+              padding: "14px 16px", 
+              background: "#0a0a0a", 
+              color: "#00ff00", 
+              border: "1px solid #333", 
+              fontSize: "1rem", 
+              borderRadius: "8px",
+              outline: "none",
+              transition: "border-color 0.2s"
+            }}
+            onFocus={(e) => e.target.style.borderColor = "#00ff00"}
+            onBlur={(e) => e.target.style.borderColor = "#333"}
             />
         )}
         <input
           type="email"
-          placeholder="Email Address"
+          placeholder="Email"
           value={email}
           onChange={(e) => setEmail(e.target.value)}
-          style={{ padding: "12px", background: "black", color: "#00ff00", border: "1px solid #00ff00", fontSize: "1rem", borderRadius: "6px" }}
+          required
+          style={{ 
+            padding: "14px 16px", 
+            background: "#0a0a0a", 
+            color: "#00ff00", 
+            border: "1px solid #333", 
+            fontSize: "1rem", 
+            borderRadius: "8px",
+            outline: "none",
+            transition: "border-color 0.2s"
+          }}
+          onFocus={(e) => e.target.style.borderColor = "#00ff00"}
+          onBlur={(e) => e.target.style.borderColor = "#333"}
         />
         <input
           type="password"
           placeholder="Password"
           value={password}
           onChange={(e) => setPassword(e.target.value)}
-          style={{ padding: "12px", background: "black", color: "#00ff00", border: "1px solid #00ff00", fontSize: "1rem", borderRadius: "6px" }}
+          required
+          style={{ 
+            padding: "14px 16px", 
+            background: "#0a0a0a", 
+            color: "#00ff00", 
+            border: "1px solid #333", 
+            fontSize: "1rem", 
+            borderRadius: "8px",
+            outline: "none",
+            transition: "border-color 0.2s"
+          }}
+          onFocus={(e) => e.target.style.borderColor = "#00ff00"}
+          onBlur={(e) => e.target.style.borderColor = "#333"}
         />
-        <button type="submit" style={{ padding: "14px", background: "#00ff00", color: "black", fontWeight: "bold", border: "none", cursor: "pointer", fontSize: "1.1rem", borderRadius: "6px" }}>
-          {isRegistering ? "Sign Up" : "Login"}
+        <button 
+          type="submit" 
+          style={{ 
+            padding: "16px", 
+            background: "#00ff00", 
+            color: "#000", 
+            fontWeight: "600", 
+            border: "none", 
+            cursor: "pointer", 
+            fontSize: "1.05rem", 
+            borderRadius: "8px",
+            transition: "all 0.2s",
+            marginTop: "8px"
+          }}
+          onMouseEnter={(e) => e.currentTarget.style.background = "#00dd00"}
+          onMouseLeave={(e) => e.currentTarget.style.background = "#00ff00"}
+        >
+          {isRegistering ? "Sign Up" : "Sign In"}
         </button>
       </form>
-      <div style={{ marginTop: "20px", textAlign: "center" }}>
+      <div style={{ marginTop: "24px", textAlign: "center" }}>
         <button 
             onClick={() => setIsRegistering(!isRegistering)}
-            style={{ background: "transparent", color: "#00ff00", border: "none", cursor: "pointer", textDecoration: "underline", fontSize: "0.9rem" }}
+            style={{ 
+              background: "transparent", 
+              color: "#00ff00", 
+              border: "none", 
+              cursor: "pointer", 
+              fontSize: "0.95rem",
+              transition: "color 0.2s"
+            }}
+            onMouseEnter={(e) => e.currentTarget.style.color = "#00dd00"}
+            onMouseLeave={(e) => e.currentTarget.style.color = "#00ff00"}
         >
-            {isRegistering ? "← Back to Login" : "Create an Account →"}
+            {isRegistering ? "Already have an account? Sign in" : "Don't have an account? Create one"}
         </button>
       </div>
     </div>
