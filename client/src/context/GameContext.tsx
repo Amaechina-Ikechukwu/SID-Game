@@ -1,7 +1,6 @@
 import React, { createContext, useContext, useEffect, useState } from "react";
 import { doc, onSnapshot } from "firebase/firestore";
 import { db } from "../lib/firebase";
-import { useNavigate, useLocation } from "react-router-dom";
 
 interface GameContextType {
   currentActivity: string;
@@ -21,8 +20,6 @@ export const GameProvider: React.FC<{ children: React.ReactNode }> = ({ children
   const [currentActivity, setCurrentActivity] = useState<string>("none");
   const [sessionStatus, setSessionStatus] = useState<string>("idle");
   const [imageIndex, setImageIndex] = useState<number>(0);
-  const navigate = useNavigate();
-  const location = useLocation();
 
   useEffect(() => {
     console.log(">> GAME_CONTEXT_INIT: Listening to default-session");

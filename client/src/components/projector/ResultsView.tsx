@@ -13,7 +13,7 @@ interface ResultsViewProps {
     status: string;
 }
 
-export const ResultsView: React.FC<ResultsViewProps> = ({ activityId, status }) => {
+export const ResultsView: React.FC<ResultsViewProps> = ({ activityId, status: _status }) => {
     const [data, setData] = useState<any[]>([]);
 
     useEffect(() => {

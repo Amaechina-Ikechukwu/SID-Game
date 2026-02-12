@@ -15,7 +15,7 @@ export const CyberBarChart: React.FC<{ data: any[] }> = ({ data }) => {
           itemStyle={{ color: '#00ff00' }}
         />
         <Bar dataKey="value" fill="#00ff00" barSize={80} label={{ position: 'top', fill: '#00ff00', fontFamily: 'Courier Prime', fontSize: 24, fontWeight: 'bold' }}>
-          {data.map((entry, index) => (
+          {data.map((_entry, index) => (
             <Cell key={`cell-${index}`} fill={index % 2 === 0 ? '#00ff00' : '#ffffff'} />
           ))}
         </Bar>
@@ -52,7 +52,7 @@ export const CyberDonutChart: React.FC<{ data: any[] }> = ({ data }) => {
           label={renderLabel}
           labelLine={false}
         >
-          {data.map((entry, index) => (
+          {data.map((_entry, index) => (
             <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
           ))}
         </Pie>
