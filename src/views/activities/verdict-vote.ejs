@@ -1,0 +1,77 @@
+<div id="verdict-container">
+    <h2>>> JUDICIAL_PROTOCOL</h2>
+    <p>REVIEW_CASE_STUDY.</p>
+    <p>SELECT_APPROPRIATE_CONSEQUENCE:</p>
+    
+    <div class="poll-options">
+        <label class="cyber-radio-card">
+            <input type="radio" name="verdict" value="expel" onclick="enableConfidence()">
+            <span class="label-text">EXPEL_STUDENT</span>
+        </label>
+        
+        <label class="cyber-radio-card">
+            <input type="radio" name="verdict" value="warning" onclick="enableConfidence()">
+            <span class="label-text">FORMAL_WARNING</span>
+        </label>
+        
+        <label class="cyber-radio-card">
+            <input type="radio" name="verdict" value="police" onclick="enableConfidence()">
+            <span class="label-text">REPORT_TO_POLICE</span>
+        </label>
+        
+        <label class="cyber-radio-card">
+            <input type="radio" name="verdict" value="none" onclick="enableConfidence()">
+            <span class="label-text">NO_SCHOOL_RESPONSIBILITY</span>
+        </label>
+    </div>
+
+    <div id="confidence-section" style="margin-top: 20px; display: none; opacity: 0.5;">
+        <p>CONFIDENCE_LEVEL: <span id="conf-val">3</span>/5</p>
+        <input type="range" id="confidence" name="confidence" min="1" max="5" value="3" oninput="updateConf(this.value)" style="width: 100%;">
+        <div style="display: flex; justify-content: space-between; font-size: 0.8rem;">
+            <span>UNCERTAIN</span>
+            <span>CERTAIN</span>
+        </div>
+        
+        <button id="submit-verdict" class="cyber-button action-btn" onclick="submitVerdict()">>> ENTER_JUDGMENT</button>
+    </div>
+    
+    <div id="verdict-status" style="margin-top:20px; display:none;">
+        JUDGMENT_RECORDED. CASE_CLOSED.
+    </div>
+</div>
+
+<script>
+    let currentCaseIndex = 0; // Should be dynamic
+
+    function enableConfidence() {
+        const sec = document.getElementById('confidence-section');
+        sec.style.display = 'block';
+        sec.style.opacity = '1';
+    }
+
+    function updateConf(val) {
+        document.getElementById('conf-val').innerText = val;
+    }
+
+    async function submitVerdict() {
+        const verdict = document.querySelector('input[name="verdict"]:checked').value;
+        const confidence = parseInt(document.getElementById('confidence').value);
+        
+        try {
+            const response = await fetch('/activity/verdict-vote/respond', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ caseIndex: currentCaseIndex, verdict: verdict, confidence: confidence })
+            });
+            
+            if (response.ok) {
+                document.getElementById('verdict-container').innerHTML = document.getElementById('verdict-status').innerHTML;
+                document.getElementById('verdict-status').style.display = 'block';
+            }
+        } catch (e) {
+            console.error(e);
+            alert("TRANSMISSION_ERROR");
+        }
+    }
+</script>

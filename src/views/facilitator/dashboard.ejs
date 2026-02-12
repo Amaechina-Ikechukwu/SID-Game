@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SID2026 - DASHBOARD</title>
+    <link rel="stylesheet" href="/css/style.css">
+    <style>
+        .container { max-width: 800px; }
+        .activity-item { 
+            padding: 15px; 
+            border: 1px solid black; 
+            margin-bottom: 10px; 
+            display: flex; 
+            justify-content: space-between; 
+            align-items: center; 
+        }
+        .activity-item h3 { margin: 0; font-size: 1.2rem; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>>> FACILITATOR_CONTROL</h1>
+        
+        <div style="margin-bottom: 20px; text-align: right;">
+            <button onclick="resetSession()" style="background: white; color: black; border-color: red; color: red;">>> STOP / RESET_SESSION</button>
+        </div>
+
+        <div class="activity-list">
+            <div class="activity-item">
+                <h3>01_PASSWORD_HYGIENE</h3>
+                <button onclick="launch('password-poll')">>> LAUNCH</button>
+            </div>
+            <div class="activity-item">
+                <h3>02_PHISHING_SIMULATION</h3>
+                <button onclick="launch('phishing')">>> LAUNCH</button>
+            </div>
+            <div class="activity-item">
+                <h3>03_APP_TRACKING_POLL</h3>
+                <button onclick="launch('tracking-poll')">>> LAUNCH</button>
+            </div>
+            <div class="activity-item">
+                <h3>04_Visual_Analysis (REAL/AI)</h3>
+                <button onclick="launch('real-or-ai')">>> LAUNCH</button>
+            </div>
+            <div class="activity-item">
+                <h3>05_MISINFO_HEADLINE</h3>
+                <button onclick="launch('misinformation')">>> LAUNCH</button>
+            </div>
+            <div class="activity-item">
+                <h3>06_VERDICT_VOTE</h3>
+                <button onclick="launch('verdict-vote')">>> LAUNCH</button>
+            </div>
+        </div>
+        
+        <div style="margin-top: 30px; border-top: 2px solid black; padding-top: 20px;">
+            <h3>>> SESSION_STATUS</h3>
+            <p id="status-display">CONNECTING_TO_NETWORK...</p>
+        </div>
+    </div>
+    <script src="/js/firebase.js"></script>
+    <script src="/js/ui.js"></script>
+    <script>
+    <script type="module">
+        import { db, doc, onSnapshot } from "/js/db.js";
+        
+        // Real-time listener for Dashboard
+        const sessionId = "default-session";
+        
+        onSnapshot(doc(db, "sessions", sessionId), (docSnap) => {
+            if (docSnap.exists()) {
+                const data = docSnap.data();
+                const activity = data.currentActivity || "NONE";
+                const statusDisplay = document.getElementById('status-display');
+                if(statusDisplay) statusDisplay.innerText = 'ACTIVE_MODULE: ' + activity.toUpperCase();
+            }
+        });
+    </script>
+    <script>
+
+        async function launch(id) {
+            try {
+                showToast("TRANSMITTING_COMMAND...", "info");
+                const response = await fetch('/admin/activity/' + id + '/launch', {
+                    method: 'POST'
+                });
+                const data = await response.json();
+                if (data.status === 'success') {
+                    showToast("MODULE_LAUNCH_CONFIRMED: " + id.toUpperCase(), "success");
+                    // Status text update handled by listener above
+                } else {
+                    throw new Error(data.message || "UNKNOWN_ERROR");
+                }
+            } catch (e) {
+                console.error(e);
+                showToast("COMMAND_FAILED: " + e.message.toUpperCase(), "error");
+            }
+        }
+
+        async function resetSession() {
+            if(!confirm("CONFIRM_RESET: ALL_CLIENTS_WILL_RETURN_TO_LOBBY?")) return;
+            
+            try {
+                showToast("RESETTING_SYSTEM...", "info");
+                const response = await fetch('/admin/reset', { method: 'POST' });
+                const data = await response.json();
+                if (data.status === 'success') {
+                    showToast("SYSTEM_IDLE. CLIENTS_REDIRECTING...", "success");
+                } else {
+                    throw new Error(data.message || "UNKNOWN_ERROR");
+                }
+            } catch (e) {
+                console.error(e);
+                showToast("RESET_FAILED: " + e.message, "error");
+            }
+        }
+    </script>
+</body>
+</html>
