@@ -1,0 +1,168 @@
+:root {
+  --primary-color: #000000;
+  --secondary-color: #333333;
+  --background-color: #ffffff;
+  --text-color: #000000;
+  /* Use a more readable monospace stack, slightly heavier */
+  --font-family: 'Consolas', 'Monaco', 'Courier New', monospace;
+  --border-style: 2px solid #000000; /* Thicker borders for better visibility */
+}
+
+body {
+  font-family: var(--font-family);
+  background-color: var(--background-color);
+  color: var(--text-color);
+  margin: 0;
+  padding: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  /* Removed global uppercase for readability */
+  font-size: 16px; 
+  font-weight: 500; /* Slightly bolder */
+}
+
+.container {
+  background: var(--background-color);
+  padding: 2.5rem; /* More padding */
+  border: var(--border-style);
+  border-radius: 0;
+  box-shadow: 5px 5px 0px 0px rgba(0,0,0,1); /* Hard shadow for pop */
+  max-width: 500px;
+  width: 100%;
+  text-align: left;
+  position: relative;
+}
+
+.container::before {
+    content: ">> SID2026_SYSTEM_READY";
+    display: block;
+    margin-bottom: 20px;
+    font-weight: bold;
+    border-bottom: 2px solid black;
+    padding-bottom: 10px;
+    letter-spacing: 1px;
+}
+
+h1 {
+    font-size: 1.8rem; /* Larger */
+    margin-bottom: 1.5rem;
+    border-bottom: var(--border-style);
+    padding-bottom: 0.5rem;
+    text-transform: uppercase; /* Keep headers uppercase */
+    letter-spacing: 0.5px;
+}
+
+p {
+    font-size: 1.1rem; /* Larger body text */
+    line-height: 1.6;
+    margin-bottom: 1rem;
+}
+
+button {
+  background-color: var(--background-color);
+  color: var(--text-color);
+  border: 2px solid var(--text-color);
+  padding: 12px 24px; /* Larger hit area */
+  border-radius: 0;
+  cursor: pointer;
+  font-size: 1rem;
+  margin-top: 20px;
+  font-family: var(--font-family);
+  font-weight: bold;
+  text-transform: uppercase;
+  transition: all 0.1s;
+  box-shadow: 3px 3px 0px 0px rgba(0,0,0,1); /* Button shadow */
+}
+
+button:hover {
+  background-color: var(--text-color);
+  color: var(--background-color);
+  box-shadow: 1px 1px 0px 0px rgba(0,0,0,1);
+  transform: translate(2px, 2px);
+}
+
+button:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+    box-shadow: none;
+    transform: none;
+}
+
+label {
+    display: block;
+    margin-top: 15px;
+    margin-bottom: 5px;
+    font-weight: bold;
+    text-transform: uppercase;
+    font-size: 0.9rem;
+}
+
+input {
+  width: 100%;
+  padding: 12px; /* More padding */
+  margin: 5px 0 15px 0;
+  border: var(--border-style);
+  border-radius: 0;
+  box-sizing: border-box;
+  font-family: var(--font-family);
+  font-size: 1rem;
+  background: #ffffff; /* White background for better contrast */
+  color: black;
+  transition: background 0.2s;
+}
+
+input:focus {
+    outline: none;
+    background: #f0f0f0; /* Slight grey on focus */
+    border-color: black;
+}
+
+/* Toast Notification Styles */
+#toast-container {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    z-index: 9999;
+}
+
+.toast {
+    background: black;
+    color: white;
+    padding: 15px 25px;
+    border: 2px solid white; /* High contrast */
+    margin-bottom: 10px;
+    font-family: var(--font-family);
+    font-weight: bold;
+    box-shadow: 5px 5px 0px 0px rgba(0,0,0,0.5);
+    opacity: 0;
+    transition: opacity 0.3s ease-in-out;
+    max-width: 300px;
+    word-wrap: break-word;
+}
+
+.toast.show {
+    opacity: 1;
+}
+
+.toast-error {
+    border-color: #ff3333;
+    color: #ff3333;
+    background: black; 
+}
+
+.toast-success {
+    border-color: #33ff33; 
+    color: #33ff33;
+    background: black;
+}
+
+/* Utilities */
+.blink {
+    animation: blinker 1s linear infinite;
+}
+
+@keyframes blinker {
+    50% { opacity: 0; }
+}

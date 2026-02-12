@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SID2026 - REGISTER</title>
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+    <div class="container">
+        <h1>>> NEW_IDENTITY_REGISTRATION</h1>
+        <p>CREATE A NEW PROFILE FOR THE SID2026 EVENT.</p>
+
+        <form id="registerForm">
+            <label for="name">DISPLAY_NAME:</label>
+            <input type="text" id="name" name="name" required placeholder="JOHN_DOE">
+
+            <label for="email">EMAIL_ADDRESS:</label>
+            <input type="email" id="email" name="email" required autocomplete="email" placeholder="USER@DOMAIN.COM">
+            
+            <label for="password">SET_ACCESS_CODE:</label>
+            <input type="password" id="password" name="password" required autocomplete="new-password" placeholder="MIN_8_CHARS" minlength="8">
+            
+            <button type="submit">>> CREATE_IDENTITY</button>
+        </form>
+        
+        <p style="margin-top: 20px; font-size: 0.8rem;">
+            ALREADY_REGISTERED? <a href="/auth/login" style="color: black; font-weight: bold;">INITIATE_SESSION</a>
+        </p>
+    </div>
+
+    <!-- Firebase SDKs -->
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
+    <script src="/js/firebase.js"></script>
+    <script src="/js/ui.js"></script>
+    <script>
+        const registerForm = document.getElementById('registerForm');
+        
+        registerForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const name = document.getElementById('name').value;
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+            const submitBtn = registerForm.querySelector('button');
+            const originalBtnText = submitBtn.innerText;
+
+            submitBtn.disabled = true;
+            submitBtn.innerText = ">> CREATING_IDENTITY...";
+            
+            try {
+                const userCredential = await firebase.auth().createUserWithEmailAndPassword(email, password);
+                await userCredential.user.updateProfile({ displayName: name });
+                
+                const idToken = await userCredential.user.getIdToken();
+                
+                const response = await fetch('/auth/login', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ idToken })
+                });
+                
+                if (response.ok) {
+                    showToast('IDENTITY_CREATED. ACCESS_GRANTED.', 'success');
+                    setTimeout(() => {
+                        window.location.href = '/lobby';
+                    }, 1000);
+                } else {
+                    throw new Error('REGISTRATION_SUCCESS_BUT_LOGIN_FAILED');
+                }
+            } catch (error) {
+                console.error("Registration Error:", error);
+                showToast('REGISTRATION_ERROR: ' + (error.message ? error.message.toUpperCase() : "UNKNOWN_ERROR"), 'error');
+                submitBtn.disabled = false;
+                submitBtn.innerText = originalBtnText;
+            }
+        });
+    </script>
+</body>
+</html>
