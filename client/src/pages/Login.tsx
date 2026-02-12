@@ -29,43 +29,45 @@ export const Login: React.FC = () => {
   };
 
   return (
-    <div className="container" style={{ maxWidth: "400px", margin: "100px auto", padding: "20px", border: "2px solid #00ff00" }}>
-      <h1>{isRegistering ? ">> NEW_AGENT_REGISTRATION" : ">> AUTHENTICATION_REQUIRED"}</h1>
+    <div className="container" style={{ maxWidth: "400px", margin: "100px auto", padding: "20px", border: "2px solid #00ff00", borderRadius: "8px" }}>
+      <h1 style={{ fontSize: "clamp(1.2rem, 5vw, 1.8rem)", marginBottom: "20px", wordBreak: "break-word" }}>
+        {isRegistering ? "🆕 New Registration" : "🔒 Login"}
+      </h1>
       {error && <p style={{ color: "red" }}>ERROR: {error}</p>}
       <form onSubmit={handleAuth} style={{ display: "flex", flexDirection: "column", gap: "10px" }}>
         {isRegistering && (
             <input
             type="text"
-            placeholder="AGENT_CODENAME (DISPLAY NAME)"
+            placeholder="Your Name"
             value={displayName}
             onChange={(e) => setDisplayName(e.target.value)}
-            style={{ padding: "10px", background: "black", color: "#00ff00", border: "1px solid #00ff00" }}
+            style={{ padding: "12px", background: "black", color: "#00ff00", border: "1px solid #00ff00", fontSize: "1rem", borderRadius: "6px" }}
             />
         )}
         <input
           type="email"
-          placeholder="USER_ID (EMAIL)"
+          placeholder="Email Address"
           value={email}
           onChange={(e) => setEmail(e.target.value)}
-          style={{ padding: "10px", background: "black", color: "#00ff00", border: "1px solid #00ff00" }}
+          style={{ padding: "12px", background: "black", color: "#00ff00", border: "1px solid #00ff00", fontSize: "1rem", borderRadius: "6px" }}
         />
         <input
           type="password"
-          placeholder="ACCESS_CODE (PASSWORD)"
+          placeholder="Password"
           value={password}
           onChange={(e) => setPassword(e.target.value)}
-          style={{ padding: "10px", background: "black", color: "#00ff00", border: "1px solid #00ff00" }}
+          style={{ padding: "12px", background: "black", color: "#00ff00", border: "1px solid #00ff00", fontSize: "1rem", borderRadius: "6px" }}
         />
-        <button type="submit" style={{ padding: "10px", background: "#00ff00", color: "black", fontWeight: "bold", border: "none", cursor: "pointer" }}>
-          {isRegistering ? ">> ESTABLISH_UPLINK" : ">> INITIATE_HANDSHAKE"}
+        <button type="submit" style={{ padding: "14px", background: "#00ff00", color: "black", fontWeight: "bold", border: "none", cursor: "pointer", fontSize: "1.1rem", borderRadius: "6px" }}>
+          {isRegistering ? "Sign Up" : "Login"}
         </button>
       </form>
       <div style={{ marginTop: "20px", textAlign: "center" }}>
         <button 
             onClick={() => setIsRegistering(!isRegistering)}
-            style={{ background: "transparent", color: "#00ff00", border: "none", cursor: "pointer", textDecoration: "underline", fontSize: "0.8rem" }}
+            style={{ background: "transparent", color: "#00ff00", border: "none", cursor: "pointer", textDecoration: "underline", fontSize: "0.9rem" }}
         >
-            {isRegistering ? "<< RETURN_TO_LOGIN" : ">> REQUEST_NEW_CLEARANCE"}
+            {isRegistering ? "← Back to Login" : "Create an Account →"}
         </button>
       </div>
     </div>
