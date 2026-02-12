@@ -26,9 +26,6 @@ COPY src/ ./src/
 COPY public/ ./public/
 COPY tsconfig.json ./
 
-# Copy service account (optional — Cloud Run uses applicationDefault() automatically)
-COPY service-account.json* ./
-
 # Copy built frontend from stage 1
 COPY --from=frontend-build /app/client/dist /app/client/dist
 
