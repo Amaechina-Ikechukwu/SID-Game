@@ -24,6 +24,14 @@ const FacilitatorRoute = ({ children }: { children: React.ReactNode }) => {
   return <>{children}</>;
 };
 
+const RootRedirect = () => {
+  const { user, loading, isAdmin } = useAuth();
+  if (loading) return <div>LOADING...</div>;
+  if (!user) return <Navigate to="/login" />;
+  if (isAdmin) return <Navigate to="/dashboard" />;
+  return <Navigate to="/lobby" />;
+};
+
 function App() {
   return (
     <Router>
@@ -49,7 +57,7 @@ function App() {
                   <Activity />
                 </ProtectedRoute>
               } />
-              <Route path="/" element={<Navigate to="/lobby" />} />
+              <Route path="/" element={<RootRedirect />} />
             </Routes>
           </ToastProvider>
         </GameProvider>
